@@ -1,21 +1,25 @@
-import { Col, Dropdown, Icon, Menu, Row } from 'antd';
-import React, { Component, Suspense } from 'react';
+import { Col, Dropdown, Icon, Menu, Row } from "antd";
+import React, { Component, Suspense, useEffect, useState } from "react";
 
-import { Dispatch } from 'redux';
-import { GridContent } from '@ant-design/pro-layout';
-import { RadioChangeEvent } from 'antd/es/radio';
-import { RangePickerValue } from 'antd/es/date-picker/interface';
-import { connect } from 'dva';
-import PageLoading from './components/PageLoading';
-import { getTimeDistance } from './utils/utils';
-import { AnalysisData } from './data.d';
-import styles from './style.less';
+import { Dispatch } from "redux";
+import { GridContent } from "@ant-design/pro-layout";
+import { RadioChangeEvent } from "antd/es/radio";
+import { RangePickerValue } from "antd/es/date-picker/interface";
+import { connect } from "dva";
+import PageLoading from "./components/PageLoading";
+import { getTimeDistance } from "./utils/utils";
+import { AnalysisData } from "./data.d";
+import styles from "./style.less";
 
-const IntroduceRow = React.lazy(() => import('./components/IntroduceRow'));
-const SalesCard = React.lazy(() => import('./components/SalesCard'));
-const TopSearch = React.lazy(() => import('./components/TopSearch'));
-const ProportionSales = React.lazy(() => import('./components/ProportionSales'));
-const OfflineData = React.lazy(() => import('./components/OfflineData'));
+// 我添加的
+import { fakeChartData } from "./service";
+import { useDispatch, useSelector } from "dva";
+
+import IntroduceRow from "./components/IntroduceRow";
+import SalesCard from "./components/SalesCard";
+import TopSearch from "./components/TopSearch";
+import ProportionSales from "./components/ProportionSales";
+import OfflineData from "./components/OfflineData";
 
 interface PAGE_NAME_UPPER_CAMEL_CASEProps {
   BLOCK_NAME_CAMEL_CASE: AnalysisData;
@@ -24,7 +28,7 @@ interface PAGE_NAME_UPPER_CAMEL_CASEProps {
 }
 
 interface PAGE_NAME_UPPER_CAMEL_CASEState {
-  salesType: 'all' | 'online' | 'stores';
+  salesType: "all" | "online" | "stores";
   currentTabKey: string;
   rangePickerValue: RangePickerValue;
 }
@@ -32,7 +36,7 @@ interface PAGE_NAME_UPPER_CAMEL_CASEState {
 @connect(
   ({
     BLOCK_NAME_CAMEL_CASE,
-    loading,
+    loading
   }: {
     BLOCK_NAME_CAMEL_CASE: any;
     loading: {
@@ -40,17 +44,17 @@ interface PAGE_NAME_UPPER_CAMEL_CASEState {
     };
   }) => ({
     BLOCK_NAME_CAMEL_CASE,
-    loading: loading.effects['BLOCK_NAME_CAMEL_CASE/fetch'],
-  }),
+    loading: loading.effects["BLOCK_NAME_CAMEL_CASE/fetch"]
+  })
 )
 class PAGE_NAME_UPPER_CAMEL_CASE extends Component<
   PAGE_NAME_UPPER_CAMEL_CASEProps,
   PAGE_NAME_UPPER_CAMEL_CASEState
 > {
   state: PAGE_NAME_UPPER_CAMEL_CASEState = {
-    salesType: 'all',
-    currentTabKey: '',
-    rangePickerValue: getTimeDistance('year'),
+    salesType: "all",
+    currentTabKey: "",
+    rangePickerValue: getTimeDistance("year")
   };
 
   reqRef: number = 0;
@@ -61,7 +65,7 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component<
     const { dispatch } = this.props;
     this.reqRef = requestAnimationFrame(() => {
       dispatch({
-        type: 'BLOCK_NAME_CAMEL_CASE/fetch',
+        type: "BLOCK_NAME_CAMEL_CASE/fetch"
       });
     });
   }
@@ -69,7 +73,7 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component<
   componentWillUnmount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'BLOCK_NAME_CAMEL_CASE/clear',
+      type: "BLOCK_NAME_CAMEL_CASE/clear"
     });
     cancelAnimationFrame(this.reqRef);
     clearTimeout(this.timeoutId);
@@ -77,51 +81,51 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component<
 
   handleChangeSalesType = (e: RadioChangeEvent) => {
     this.setState({
-      salesType: e.target.value,
+      salesType: e.target.value
     });
   };
 
   handleTabChange = (key: string) => {
     this.setState({
-      currentTabKey: key,
+      currentTabKey: key
     });
   };
 
   handleRangePickerChange = (rangePickerValue: RangePickerValue) => {
     const { dispatch } = this.props;
     this.setState({
-      rangePickerValue,
+      rangePickerValue
     });
 
     dispatch({
-      type: 'BLOCK_NAME_CAMEL_CASE/fetchSalesData',
+      type: "BLOCK_NAME_CAMEL_CASE/fetchSalesData"
     });
   };
 
-  selectDate = (type: 'today' | 'week' | 'month' | 'year') => {
+  selectDate = (type: "today" | "week" | "month" | "year") => {
     const { dispatch } = this.props;
     this.setState({
-      rangePickerValue: getTimeDistance(type),
+      rangePickerValue: getTimeDistance(type)
     });
 
     dispatch({
-      type: 'BLOCK_NAME_CAMEL_CASE/fetchSalesData',
+      type: "BLOCK_NAME_CAMEL_CASE/fetchSalesData"
     });
   };
 
-  isActive = (type: 'today' | 'week' | 'month' | 'year') => {
+  isActive = (type: "today" | "week" | "month" | "year") => {
     const { rangePickerValue } = this.state;
     const value = getTimeDistance(type);
     if (!rangePickerValue[0] || !rangePickerValue[1]) {
-      return '';
+      return "";
     }
     if (
-      rangePickerValue[0].isSame(value[0], 'day') &&
-      rangePickerValue[1].isSame(value[1], 'day')
+      rangePickerValue[0].isSame(value[0], "day") &&
+      rangePickerValue[1].isSame(value[1], "day")
     ) {
       return styles.currentDate;
     }
-    return '';
+    return "";
   };
 
   render() {
@@ -136,13 +140,14 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component<
       offlineChartData,
       salesTypeData,
       salesTypeDataOnline,
-      salesTypeDataOffline,
+      salesTypeDataOffline
     } = BLOCK_NAME_CAMEL_CASE;
     let salesPieData;
-    if (salesType === 'all') {
+    if (salesType === "all") {
       salesPieData = salesTypeData;
     } else {
-      salesPieData = salesType === 'online' ? salesTypeDataOnline : salesTypeDataOffline;
+      salesPieData =
+        salesType === "online" ? salesTypeDataOnline : salesTypeDataOffline;
     }
     const menu = (
       <Menu>
@@ -180,7 +185,7 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component<
             gutter={24}
             type="flex"
             style={{
-              marginTop: 24,
+              marginTop: 24
             }}
           >
             <Col xl={12} lg={24} md={24} sm={24} xs={24}>
@@ -220,4 +225,21 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component<
   }
 }
 
-export default PAGE_NAME_UPPER_CAMEL_CASE;
+export default function AnalysisFC() {
+  const [dashboardAnalysis, setDashboardAnalysis] = useState<AnalysisData>({});
+  const [loading, setLoading] = useState(true);
+  const { visitData = [] } = dashboardAnalysis;
+
+  useEffect(() => {
+    fakeChartData().then(res => {
+      setDashboardAnalysis(res);
+    });
+  }, []);
+
+  console.log(dashboardAnalysis, visitData, loading);
+  return (
+    <GridContent>
+      <IntroduceRow loading={loading} visitData={visitData} />
+    </GridContent>
+  );
+}

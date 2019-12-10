@@ -20,10 +20,10 @@ export function _onCreate() {
     app.use(plugin);
   });
   
-  app.model({ namespace: 'global', ...(require('D:/test/TypeScript/antd/antd-pro-with-hooks/src/models/global.ts').default) });
-app.model({ namespace: 'login', ...(require('D:/test/TypeScript/antd/antd-pro-with-hooks/src/models/login.ts').default) });
-app.model({ namespace: 'setting', ...(require('D:/test/TypeScript/antd/antd-pro-with-hooks/src/models/setting.ts').default) });
-app.model({ namespace: 'user', ...(require('D:/test/TypeScript/antd/antd-pro-with-hooks/src/models/user.ts').default) });
+  app.model({ namespace: 'global', ...(require('/Users/zhangwen/Sites/front-end/antd-pro-with-hooks/src/models/global.ts').default) });
+app.model({ namespace: 'login', ...(require('/Users/zhangwen/Sites/front-end/antd-pro-with-hooks/src/models/login.ts').default) });
+app.model({ namespace: 'setting', ...(require('/Users/zhangwen/Sites/front-end/antd-pro-with-hooks/src/models/setting.ts').default) });
+app.model({ namespace: 'user', ...(require('/Users/zhangwen/Sites/front-end/antd-pro-with-hooks/src/models/user.ts').default) });
   return app;
 }
 
