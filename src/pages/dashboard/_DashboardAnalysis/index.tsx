@@ -226,17 +226,15 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component<
 }
  */
 
-
 import { Col, Row } from "antd";
 import React, { useState } from "react";
 import { GridContent } from "@ant-design/pro-layout";
 import { getTimeDistance } from "./utils/utils";
 import { AnalysisData } from "./data.d";
 import styles from "./style.less";
-import { fakeChartData } from './service';
-import useInitial from '@/hooks/useInitial';
-import { initState } from './model';
-
+import { fakeChartData } from "./service";
+import useInitial from "@/hooks/useInitial";
+import { initState } from "./model";
 
 import IntroduceRow from "./components/IntroduceRow";
 import SalesCard from "./components/SalesCard";
@@ -248,28 +246,31 @@ export type SalesType = "all" | "online" | "stores";
 export type DateType = "today" | "week" | "month" | "year";
 
 export default function AnalysisFC() {
-  // const dashboardAnalysis = useSelector<any, AnalysisData>(
-  //   state => state.dashboardAnalysis
-  // );
-  // const loadingEffect = useSelector<any, LoadingEffect>(state => state.loading);
-  // const loading = loadingEffect.effects["dashboardAnalysis/fetch"];
-  // const dispatch = useDispatch();
+  const { loading, data, setParams, errMsg, setLoading } = useInitial<
+    AnalysisData,
+    null
+  >(fakeChartData, initState, null);
 
   const {
-    loading, data, setParams, errMsg, setLoading
-  } = useInitial<AnalysisData, null>(fakeChartData, initState, null);
-
-  const {
-    visitData, visitData2, salesData, searchData, offlineData, offlineChartData,
-    salesTypeData, salesTypeDataOnline, salesTypeDataOffline,
+    visitData,
+    visitData2,
+    salesData,
+    searchData,
+    offlineData,
+    offlineChartData,
+    salesTypeData,
+    salesTypeDataOnline,
+    salesTypeDataOffline
   } = data;
+  const salesPieData = {
+    all: salesTypeData,
+    online: salesTypeDataOnline,
+    stores: salesTypeDataOffline
+  };
 
-  const [salesType, setSalesType] = useState<SalesType>("all");
-  const [currentTabKey, setCurrentTabKey] = useState("");
   const [rangePickerValue, setRangePickerValue] = useState(
     getTimeDistance("year")
   );
-
 
   const isActive = (type: DateType) => {
     const value = getTimeDistance(type);
@@ -284,14 +285,6 @@ export default function AnalysisFC() {
     }
     return "";
   };
-
-
-  const salesPieData = {
-    all: salesTypeData,
-    online: salesTypeDataOnline,
-    stores: salesTypeDataOffline
-  }[salesType];
-  const activeKey = currentTabKey || (offlineData[0] && offlineData[0].name);
 
   return (
     <GridContent>
@@ -313,13 +306,7 @@ export default function AnalysisFC() {
           />
         </Col>
         <Col xl={12} lg={24} md={24} sm={24} xs={24}>
-          <ProportionSales
-            // dropdownGroup={dropdownGroup}
-            // salesType={salesType}
-            // handleChangeSalesType={e => setSalesType(e.target.value)}
-            loading={loading}
-            salesPieData={salesPieData}
-          />
+          <ProportionSales loading={loading} salesPieData={salesPieData} />
         </Col>
       </Row>
 

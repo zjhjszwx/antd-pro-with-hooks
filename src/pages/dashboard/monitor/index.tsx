@@ -1,14 +1,14 @@
-import { Card, Col, Row, Statistic, Tooltip } from 'antd';
-import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
-import React, { useEffect } from 'react';
-import { GridContent } from '@ant-design/pro-layout';
-import { useDispatch, useSelector } from 'dva';
-import numeral from 'numeral';
-import { StateType } from './model';
-import { Pie, WaterWave, Gauge, TagCloud } from './components/Charts';
-import ActiveChart from './components/ActiveChart';
-import { LoadingEffect } from '@/pages/dashboard/analysis';
-import styles from './style.less';
+import { Card, Col, Row, Statistic, Tooltip } from "antd";
+import { FormattedMessage, formatMessage } from "umi-plugin-react/locale";
+import React, { useEffect } from "react";
+import { GridContent } from "@ant-design/pro-layout";
+import { useDispatch, useSelector } from "dva";
+import numeral from "numeral";
+import { StateType } from "./model";
+import { Pie, WaterWave, Gauge, TagCloud } from "./components/Charts";
+import ActiveChart from "./components/ActiveChart";
+import { LoadingEffect } from "@/pages/dashboard/analysis";
+import styles from "./style.less";
 
 const { Countdown } = Statistic;
 
@@ -16,21 +16,30 @@ const targetTime = new Date().getTime() + 3900000;
 
 export default function MonitorFC() {
   const dispatch = useDispatch();
-  const dashboardMonitor = useSelector<any, StateType>(state => state.dashboardMonitor);
+  const dashboardMonitor = useSelector<any, StateType>(
+    state => state.dashboardMonitor
+  );
   const loadingEffect = useSelector<any, LoadingEffect>(state => state.loading);
   const loading = loadingEffect.models.monitor;
   const { tags } = dashboardMonitor;
 
   useEffect(() => {
     dispatch({
-      type: 'dashboardMonitor/fetchTags',
+      type: "dashboardMonitor/fetchTags"
     });
   }, []);
 
   return (
     <GridContent>
       <Row gutter={24}>
-        <Col xl={18} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
+        <Col
+          xl={18}
+          lg={24}
+          md={24}
+          sm={24}
+          xs={24}
+          style={{ marginBottom: 24 }}
+        >
           <Card
             title={
               <FormattedMessage
@@ -50,7 +59,7 @@ export default function MonitorFC() {
                     />
                   }
                   suffix="元"
-                  value={numeral(124543233).format('0,0')}
+                  value={numeral(124543233).format("0,0")}
                 />
               </Col>
               <Col md={6} sm={12} xs={24}>
@@ -85,7 +94,7 @@ export default function MonitorFC() {
                     />
                   }
                   suffix="元"
-                  value={numeral(234).format('0,0')}
+                  value={numeral(234).format("0,0")}
                 />
               </Col>
             </Row>
@@ -127,13 +136,13 @@ export default function MonitorFC() {
               />
             }
             style={{ marginBottom: 24 }}
-            bodyStyle={{ textAlign: 'center' }}
+            bodyStyle={{ textAlign: "center" }}
             bordered={false}
           >
             <Gauge
               title={formatMessage({
-                id: 'dashboard-monitor.monitor.ratio',
-                defaultMessage: 'Ratio',
+                id: "dashboard-monitor.monitor.ratio",
+                defaultMessage: "Ratio"
               })}
               height={180}
               percent={87}
@@ -153,12 +162,17 @@ export default function MonitorFC() {
             bordered={false}
             className={styles.pieCard}
           >
-            <Row style={{ padding: '16px 0' }}>
+            <Row style={{ padding: "16px 0" }}>
               <Col span={8}>
                 <Pie
                   animate={false}
                   percent={28}
-                  title={<FormattedMessage id="dashboard-monitor.monitor.fast-food" defaultMessage="Fast food" />}
+                  title={
+                    <FormattedMessage
+                      id="dashboard-monitor.monitor.fast-food"
+                      defaultMessage="Fast food"
+                    />
+                  }
                   total="28%"
                   height={128}
                   lineWidth={2}
@@ -169,7 +183,12 @@ export default function MonitorFC() {
                   animate={false}
                   color="#5DDECF"
                   percent={22}
-                  title={<FormattedMessage id="dashboard-monitor.monitor.western-food" defaultMessage="Western food"/>}
+                  title={
+                    <FormattedMessage
+                      id="dashboard-monitor.monitor.western-food"
+                      defaultMessage="Western food"
+                    />
+                  }
                   total="22%"
                   height={128}
                   lineWidth={2}
@@ -180,7 +199,12 @@ export default function MonitorFC() {
                   animate={false}
                   color="#2FC25B"
                   percent={32}
-                  title={<FormattedMessage id="dashboard-monitor.monitor.hot-pot" defaultMessage="Hot pot" />}
+                  title={
+                    <FormattedMessage
+                      id="dashboard-monitor.monitor.hot-pot"
+                      defaultMessage="Hot pot"
+                    />
+                  }
                   total="32%"
                   height={128}
                   lineWidth={2}
@@ -199,7 +223,7 @@ export default function MonitorFC() {
             }
             loading={loading}
             bordered={false}
-            bodyStyle={{ overflow: 'hidden' }}
+            bodyStyle={{ overflow: "hidden" }}
           >
             <TagCloud data={tags || []} height={161} />
           </Card>
@@ -212,7 +236,7 @@ export default function MonitorFC() {
                 defaultMessage="Resource Surplus"
               />
             }
-            bodyStyle={{ textAlign: 'center', fontSize: 0 }}
+            bodyStyle={{ textAlign: "center", fontSize: 0 }}
             bordered={false}
           >
             <WaterWave

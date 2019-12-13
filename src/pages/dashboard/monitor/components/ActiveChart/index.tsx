@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { Statistic } from 'antd';
-import { MiniArea } from '../Charts';
-import styles from './index.less';
+import { Statistic } from "antd";
+import { MiniArea } from "../Charts";
+import styles from "./index.less";
 
 function fixedZero(val: number) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -13,7 +13,7 @@ function getActiveData() {
   for (let i = 0; i < 24; i += 1) {
     activeData.push({
       x: `${fixedZero(i)}:00`,
-      y: Math.floor(Math.random() * 200) + i * 50,
+      y: Math.floor(Math.random() * 200) + i * 50
     });
   }
   return activeData;
@@ -21,7 +21,7 @@ function getActiveData() {
 
 export default class ActiveChart extends Component {
   state = {
-    activeData: getActiveData(),
+    activeData: getActiveData()
   };
 
   timer: number | undefined = undefined;
@@ -44,11 +44,11 @@ export default class ActiveChart extends Component {
       this.timer = window.setTimeout(() => {
         this.setState(
           {
-            activeData: getActiveData(),
+            activeData: getActiveData()
           },
           () => {
             this.loopData();
-          },
+          }
         );
       }, 1000);
     });
@@ -59,7 +59,7 @@ export default class ActiveChart extends Component {
 
     return (
       <div className={styles.activeChart}>
-        <Statistic title="目标评估" value="有望达到预期" />
+        <Statistic title="目标评估ss" value="有望达到预期" />
         <div style={{ marginTop: 32 }}>
           <MiniArea
             animate={false}
@@ -68,14 +68,14 @@ export default class ActiveChart extends Component {
             height={84}
             scale={{
               y: {
-                tickCount: 3,
-              },
+                tickCount: 3
+              }
             }}
             yAxis={{
               tickLine: undefined,
               label: undefined,
               title: undefined,
-              line: undefined,
+              line: undefined
             }}
             data={activeData}
           />
@@ -83,8 +83,13 @@ export default class ActiveChart extends Component {
         {activeData && (
           <div>
             <div className={styles.activeChartGrid}>
-              <p>{[...activeData].sort()[activeData.length - 1].y + 200} 亿元</p>
-              <p>{[...activeData].sort()[Math.floor(activeData.length / 2)].y} 亿元</p>
+              <p>
+                {[...activeData].sort()[activeData.length - 1].y + 200} 亿元
+              </p>
+              <p>
+                {[...activeData].sort()[Math.floor(activeData.length / 2)].y}{" "}
+                亿元
+              </p>
             </div>
             <div className={styles.dashedLine}>
               <div className={styles.line} />

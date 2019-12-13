@@ -1,42 +1,47 @@
-import { Avatar, Card, Col, List, Skeleton, Row, Statistic } from 'antd';
-import React, { Component } from 'react';
+import { Avatar, Card, Col, List, Skeleton, Row, Statistic } from "antd";
+import React, { Component } from "react";
 
-import { Dispatch } from 'redux';
-import Link from 'umi/link';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { connect } from 'dva';
-import moment from 'moment';
-import Radar from './components/Radar';
-import { ModalState } from './model';
-import EditableLinkGroup from './components/EditableLinkGroup';
-import styles from './style.less';
-import { ActivitiesType, CurrentUser, NoticeType, RadarDataType } from './data.d';
+import { Dispatch } from "redux";
+import Link from "umi/link";
+import { PageHeaderWrapper } from "@ant-design/pro-layout";
+import { useSelector, useDispatch } from "dva";
+import moment from "moment";
+import Radar from "./components/Radar";
+import { ModalState } from "./model";
+import EditableLinkGroup from "./components/EditableLinkGroup";
+import styles from "./style.less";
+import {
+  ActivitiesType,
+  CurrentUser,
+  NoticeType,
+  RadarDataType
+} from "./data.d";
 
 const links = [
   {
-    title: '操作一',
-    href: '',
+    title: "操作一",
+    href: ""
   },
   {
-    title: '操作二',
-    href: '',
+    title: "操作二",
+    href: ""
   },
   {
-    title: '操作三',
-    href: '',
+    title: "操作三",
+    href: ""
   },
   {
-    title: '操作四',
-    href: '',
+    title: "操作四",
+    href: ""
   },
   {
-    title: '操作五',
-    href: '',
+    title: "操作五",
+    href: ""
   },
   {
-    title: '操作六',
-    href: '',
-  },
+    title: "操作六",
+    href: ""
+  }
 ];
 
 interface PAGE_NAME_UPPER_CAMEL_CASEProps {
@@ -50,7 +55,9 @@ interface PAGE_NAME_UPPER_CAMEL_CASEProps {
   activitiesLoading: boolean;
 }
 
-const PageHeaderContent: React.FC<{ currentUser: CurrentUser }> = ({ currentUser }) => {
+const PageHeaderContent: React.FC<{ currentUser: CurrentUser }> = ({
+  currentUser
+}) => {
   const loading = currentUser && Object.keys(currentUser).length;
   if (!loading) {
     return <Skeleton avatar paragraph={{ rows: 1 }} active />;
@@ -88,35 +95,20 @@ const ExtraContent: React.FC<{}> = () => (
   </div>
 );
 
-@connect(
-  ({
-    BLOCK_NAME_CAMEL_CASE: { currentUser, projectNotice, activities, radarData },
-    loading,
-  }: {
-    BLOCK_NAME_CAMEL_CASE: ModalState;
-    loading: { effects: any };
-  }) => ({
-    currentUser,
-    projectNotice,
-    activities,
-    radarData,
-    currentUserLoading: loading.effects['BLOCK_NAME_CAMEL_CASE/fetchUserCurrent'],
-    projectLoading: loading.effects['BLOCK_NAME_CAMEL_CASE/fetchProjectNotice'],
-    activitiesLoading: loading.effects['BLOCK_NAME_CAMEL_CASE/fetchActivitiesList'],
-  }),
-)
-class PAGE_NAME_UPPER_CAMEL_CASE extends Component<PAGE_NAME_UPPER_CAMEL_CASEProps> {
+class PAGE_NAME_UPPER_CAMEL_CASE extends Component<
+  PAGE_NAME_UPPER_CAMEL_CASEProps
+> {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'BLOCK_NAME_CAMEL_CASE/init',
+      type: "BLOCK_NAME_CAMEL_CASE/init"
     });
   }
 
   componentWillUnmount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'BLOCK_NAME_CAMEL_CASE/clear',
+      type: "BLOCK_NAME_CAMEL_CASE/clear"
     });
   }
 
@@ -159,7 +151,7 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component<PAGE_NAME_UPPER_CAMEL_CASEPro
       projectNotice,
       projectLoading,
       activitiesLoading,
-      radarData,
+      radarData
     } = this.props;
 
     return (
@@ -191,9 +183,12 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component<PAGE_NAME_UPPER_CAMEL_CASEPro
                       description={item.description}
                     />
                     <div className={styles.projectItemContent}>
-                      <Link to={item.memberLink}>{item.member || ''}</Link>
+                      <Link to={item.memberLink}>{item.member || ""}</Link>
                       {item.updatedAt && (
-                        <span className={styles.datetime} title={item.updatedAt}>
+                        <span
+                          className={styles.datetime}
+                          title={item.updatedAt}
+                        >
                           {moment(item.updatedAt).fromNow()}
                         </span>
                       )}
@@ -225,7 +220,11 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component<PAGE_NAME_UPPER_CAMEL_CASEPro
               bordered={false}
               bodyStyle={{ padding: 0 }}
             >
-              <EditableLinkGroup onAdd={() => {}} links={links} linkElement={Link} />
+              <EditableLinkGroup
+                onAdd={() => {}}
+                links={links}
+                linkElement={Link}
+              />
             </Card>
             <Card
               style={{ marginBottom: 24 }}
